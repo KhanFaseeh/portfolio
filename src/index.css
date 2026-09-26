@@ -17,11 +17,24 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Cursor: Hide default cursor on desktop devices with fine pointer */
+/* Custom Cursor: Hide default cursor ONLY on desktop devices with fine pointer */
 @media (pointer: fine) {
   body, button, a, [role="button"] {
     cursor: none !important;
   }
+}
+
+/* On mobile / touch devices, enforce standard touch cursor and eliminate hover stickiness */
+@media (pointer: coarse), (max-width: 767px) {
+  body, button, a, [role="button"] {
+    cursor: auto !important;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Safe area padding utilities for mobile notched phones */
+.pb-safe {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
 }
 
 /* Luxury Editorial & Cursive Headings */

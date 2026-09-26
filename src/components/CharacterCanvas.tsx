@@ -209,6 +209,9 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
   // Pointer event listeners (passive, minimal CPU)
   useEffect(() => {
     const handlePointerMove = (e: PointerEvent) => {
+      // Ignore touch events to disable tracking on mobile
+      if (e.pointerType === 'touch') return;
+
       cursorRef.current.x = e.clientX;
       cursorRef.current.y = e.clientY;
       cursorRef.current.isInside = true;

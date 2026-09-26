@@ -41,8 +41,8 @@ export const App: React.FC = () => {
         onOpenContact={() => setActiveModal('contact')}
       />
 
-      {/* 4. Minimalist Bottom-Right Live Kinematics Telemetry Pill (Non-Intrusive) */}
-      <div className="fixed bottom-8 sm:bottom-12 right-6 sm:right-12 z-30 flex items-center space-x-3 pointer-events-auto">
+      {/* 4. Minimalist Bottom-Right Live Kinematics Telemetry Pill (Hidden on mobile < 640px) */}
+      <div className="hidden sm:flex fixed bottom-8 sm:bottom-12 right-6 sm:right-12 z-30 items-center space-x-3 pointer-events-auto">
         <button
           onClick={() => setShowVisualizer((prev) => !prev)}
           title="Toggle Eye Contact Deadzone Reticle"

@@ -22,7 +22,13 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
   useEffect(() => {
     let animId: number;
 
+    // Disable on touch devices and small viewports
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse), (max-width: 767px)').matches) {
+      return;
+    }
+
     const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
       targetPos.current.x = e.clientX;
       targetPos.current.y = e.clientY;
 
@@ -35,6 +41,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
 
     // Use pointerover / pointerout instead of mousemove checking to eliminate layout thrashing
     const handlePointerOver = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
       const target = e.target as HTMLElement | null;
       if (target) {
         const isInteractive = Boolean(
@@ -123,7 +130,7 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
 
   return (
     <div
-      className="pointer-events-none fixed inset-0 overflow-hidden"
+      className="hidden md:block pointer-events-none fixed inset-0 overflow-hidden"
       style={{
         zIndex: 999999, // Absolute maximum z-index so cursor is always on top of all modals
       }}

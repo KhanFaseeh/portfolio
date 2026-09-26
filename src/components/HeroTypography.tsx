@@ -8,15 +8,15 @@ interface HeroTypographyProps {
 
 export const HeroTypography: React.FC<HeroTypographyProps> = ({ onOpenResume, onOpenContact }) => {
   return (
-    <div className="fixed bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-30 max-w-[420px] pointer-events-auto select-none">
+    <div className="fixed bottom-20 md:bottom-8 sm:md:bottom-12 left-5 sm:left-12 lg:left-16 right-5 sm:right-auto z-30 max-w-full sm:max-w-[420px] pointer-events-auto select-none">
       {/* "Hi, I'm" in clean, spaced modern sans-serif */}
       <span className="block text-xs sm:text-sm font-sans tracking-[0.3em] uppercase text-white/90 font-medium mb-1 drop-shadow-md">
         Hi, I'm
       </span>
 
-      {/* Name in large, elegant cursive script with prominent glowing soft blurred shadow (+25-30% font size) */}
+      {/* Name in large, elegant cursive script with prominent glowing soft blurred shadow */}
       <h1
-        className="font-script text-5xl sm:text-6xl lg:text-7xl text-white font-normal leading-[1.1] mb-2"
+        className="font-script text-4xl sm:text-6xl lg:text-7xl text-white font-normal leading-[1.1] mb-1.5 sm:mb-2"
         style={{
           textShadow: '0px 4px 24px rgba(255, 255, 255, 0.45), 0px 8px 32px rgba(0, 0, 0, 0.7)',
         }}
@@ -25,30 +25,30 @@ export const HeroTypography: React.FC<HeroTypographyProps> = ({ onOpenResume, on
       </h1>
 
       {/* Tagline */}
-      <span className="block text-[11px] sm:text-xs font-mono-code uppercase tracking-wider text-white/80 mb-3 drop-shadow-md font-medium">
+      <span className="block text-[11px] sm:text-xs font-mono-code uppercase tracking-wider text-white/80 mb-2 sm:mb-3 drop-shadow-md font-medium">
         Quality Assurance Engineer & Project Manager
       </span>
 
-      {/* Compact bio (max-width ~400px) that does not crowd the character */}
-      <p className="text-xs sm:text-[13px] text-white/90 font-light leading-relaxed max-w-[390px] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+      {/* Compact bio that does not crowd the character */}
+      <p className="text-xs sm:text-[13px] text-white/90 font-light leading-relaxed max-w-full sm:max-w-[390px] mb-4 sm:mb-6 line-clamp-3 sm:line-clamp-none drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
         I specialize in driving software excellence through rigorous quality assurance and strategic project management. By bridging the gap between technical execution and project delivery, I ensure complex applications are released flawlessly, on time, and aligned with core business objectives.
       </p>
 
-      {/* Two stylish white pill buttons */}
-      <div className="flex items-center space-x-3.5">
+      {/* Two stylish pill buttons with minimum 44px touch targets on mobile */}
+      <div className="flex items-center space-x-3">
         {/* Resume: Solid white pill with arrow icon */}
         <button
           onClick={onOpenResume}
-          className="group px-5 sm:px-6 py-2.5 rounded-full bg-white text-[#0C0907] font-semibold text-xs sm:text-sm flex items-center space-x-2 shadow-xl shadow-black/30 hover:bg-white/95 hover:scale-105 active:scale-95 transition-all duration-200"
+          className="group min-h-[44px] px-5 sm:px-6 py-2.5 rounded-full bg-white text-[#0C0907] font-semibold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-xl shadow-black/30 hover:bg-white/95 active:scale-95 transition-all duration-200"
         >
           <span>Resume</span>
-          <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
         </button>
 
         {/* Let's Talk: Frosted glass / white border pill */}
         <button
           onClick={onOpenContact}
-          className="px-5 sm:px-6 py-2.5 rounded-full border border-white/70 bg-white/10 text-white font-medium text-xs sm:text-sm flex items-center space-x-2 shadow-lg shadow-black/20 hover:bg-white/20 hover:border-white hover:scale-105 active:scale-95 transition-all duration-200"
+          className="min-h-[44px] px-5 sm:px-6 py-2.5 rounded-full border border-white/70 bg-white/10 text-white font-medium text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-lg shadow-black/20 hover:bg-white/20 hover:border-white active:scale-95 transition-all duration-200"
           style={{
             backdropFilter: 'blur(16px)',
             WebkitBackdropFilter: 'blur(16px)',
