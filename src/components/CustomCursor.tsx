@@ -69,8 +69,6 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
     window.addEventListener('hero-eye-contact', handleEyeContact);
     document.addEventListener('mouseleave', handleWindowLeave);
 
-    let lastAppliedMode: string = '';
-
     // Strict 60fps Hardware-Accelerated RAF Loop (100% translate3d, 0% top/left)
     const renderLoop = () => {
       const tx = targetPos.current.x;
@@ -93,22 +91,18 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
 
         ringRef.current.style.transform = `translate3d(${ringPos.current.x - 18}px, ${ringPos.current.y - 18}px, 0) scale(${scale})`;
 
-        const currentMode = isEye ? 'eye' : isHover ? 'hover' : 'default';
-        if (currentMode !== lastAppliedMode) {
-          lastAppliedMode = currentMode;
-          if (isEye) {
-            ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.95)';
-            ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.22)';
-            ringRef.current.style.boxShadow = '0 0 20px 2px rgba(255, 255, 255, 0.5)';
-          } else if (isHover) {
-            ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.85)';
-            ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-            ringRef.current.style.boxShadow = '0 0 16px rgba(255, 255, 255, 0.35)';
-          } else {
-            ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.45)';
-            ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-            ringRef.current.style.boxShadow = '0 0 8px rgba(255, 255, 255, 0.15)';
-          }
+        if (isEye) {
+          ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.95)';
+          ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.22)';
+          ringRef.current.style.boxShadow = '0 0 20px 2px rgba(255, 255, 255, 0.5)';
+        } else if (isHover) {
+          ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.85)';
+          ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+          ringRef.current.style.boxShadow = '0 0 16px rgba(255, 255, 255, 0.35)';
+        } else {
+          ringRef.current.style.borderColor = 'rgba(255, 255, 255, 0.45)';
+          ringRef.current.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+          ringRef.current.style.boxShadow = '0 0 8px rgba(255, 255, 255, 0.15)';
         }
       }
 

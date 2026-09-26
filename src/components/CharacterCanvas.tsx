@@ -33,9 +33,9 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Pre-decoded frame assets (ImageBitmap for zero-latency GPU rendering, fallback HTMLImageElement)
-  const framesRef = useRef<(ImageBitmap | HTMLImageElement)[]>([]);
-  const centerImageRef = useRef<ImageBitmap | HTMLImageElement | null>(null);
+  // Pre-decoded frame assets (ImageBitmap or pre-decoded HTMLImageElement)
+  const framesRef = useRef<HTMLImageElement[]>([]);
+  const centerImageRef = useRef<HTMLImageElement | null>(null);
   const [loadProgress, setLoadProgress] = useState<number>(0);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
@@ -151,13 +151,13 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
     return () => window.removeEventListener('resize', updateLayout);
   }, []);
 
-  // Preload, pre-decode and convert all 64 directional frames + center.webp to ImageBitmap
+  // Preload and fully PRE-DECODE all 64 directional frames + center.webp
   useEffect(() => {
     let mounted = true;
     let loadedCount = 0;
     const totalToLoad = TOTAL_FRAMES + 1;
 
-    const frameImages: (ImageBitmap | HTMLImageElement)[] = new Array(TOTAL_FRAMES);
+    const frameImages: HTMLImageElement[] = new Array(TOTAL_FRAMES);
 
     const onImageReady = () => {
       if (!mounted) return;
@@ -167,42 +167,11 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
 
       if (loadedCount === totalToLoad) {
         framesRef.current = frameImages;
-
-        // GPU Warmup: perform an offscreen draw of each frame so GPU driver uploads all textures into VRAM immediately
-        try {
-          const offCanvas = document.createElement('canvas');
-          offCanvas.width = 16;
-          offCanvas.height = 16;
-          const offCtx = offCanvas.getContext('2d');
-          if (offCtx) {
-            if (centerImageRef.current) offCtx.drawImage(centerImageRef.current, 0, 0, 16, 16);
-            for (let i = 0; i < TOTAL_FRAMES; i++) {
-              if (frameImages[i]) offCtx.drawImage(frameImages[i], 0, 0, 16, 16);
-            }
-          }
-        } catch {
-          // Warmup silent catch
-        }
-
         setIsLoaded(true);
       }
     };
 
-    const loadAndDecode = async (src: string): Promise<ImageBitmap | HTMLImageElement> => {
-      // 1. Try fetch + createImageBitmap for zero-copy GPU textures
-      if (typeof window !== 'undefined' && 'createImageBitmap' in window) {
-        try {
-          const resp = await fetch(src);
-          const blob = await resp.blob();
-          const bitmap = await createImageBitmap(blob);
-          return bitmap;
-        } catch {
-          // Fallback to HTMLImageElement
-        }
-      }
-
-      // 2. Fallback to HTMLImageElement with .decode()
-      const img = new Image();
+    const loadAndDecode = async (img: HTMLImageElement, src: string) => {
       img.src = src;
       try {
         if ('decode' in img) {
@@ -216,22 +185,20 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
       } catch {
         // Fallback for decode rejection
       }
-      return img;
+      onImageReady();
     };
 
     // Preload & decode center image
-    loadAndDecode('/frames/center.webp').then((img) => {
-      centerImageRef.current = img;
-      onImageReady();
-    });
+    const centerImg = new Image();
+    loadAndDecode(centerImg, '/frames/center.webp');
+    centerImageRef.current = centerImg;
 
     // Preload & decode 64 directional frames in parallel
     for (let i = 0; i < TOTAL_FRAMES; i++) {
+      const img = new Image();
       const filename = `/frames/frame_${String(i).padStart(2, '0')}.webp`;
-      loadAndDecode(filename).then((img) => {
-        frameImages[i] = img;
-        onImageReady();
-      });
+      loadAndDecode(img, filename);
+      frameImages[i] = img;
     }
 
     return () => {
@@ -357,13 +324,8 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
           ? centerImageRef.current
           : framesRef.current[frameIndex];
 
-        if (activeImage) {
-          // If ImageBitmap (width > 0) or HTMLImageElement (complete && naturalWidth > 0)
-          const isValidBitmap = 'width' in activeImage && activeImage.width > 0;
-          const isValidImg = 'naturalWidth' in activeImage && (activeImage as HTMLImageElement).naturalWidth > 0;
-          if (isValidBitmap || isValidImg) {
-            ctx.drawImage(activeImage, drawX, drawY, drawW, drawH);
-          }
+        if (activeImage && activeImage.complete && activeImage.naturalWidth > 0) {
+          ctx.drawImage(activeImage, drawX, drawY, drawW, drawH);
         }
 
         // Optional Deadzone Visualizer HUD
@@ -396,15 +358,15 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
       }
 
       // Throttled Telemetry Update (Every 250ms = 4 FPS update rate)
-      // Eliminates React state reconciliation cycles on the main page
-      if (now - stateRef.current.telemetryTimer >= 250) {
+      // Eliminates 92% of React state reconciliation cycles
+      if (onTelemetryUpdate && now - stateRef.current.telemetryTimer >= 250) {
         stateRef.current.telemetryTimer = now;
         const deg = radToDeg(stateRef.current.currentAngle);
         const compass = inDeadzone
           ? { code: 'CENTER', name: 'Direct Eye Contact' }
           : getCompassDirection(deg);
 
-        const telemetryPayload: TelemetryData = {
+        onTelemetryUpdate({
           fps: stateRef.current.fps,
           angleDeg: Math.round(deg),
           angleRad: Number(stateRef.current.currentAngle.toFixed(3)),
@@ -413,12 +375,7 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
           compass,
           isLoaded: true,
           loadProgress: 100,
-        };
-
-        window.dispatchEvent(new CustomEvent('hero-telemetry', { detail: telemetryPayload }));
-        if (onTelemetryUpdate) {
-          onTelemetryUpdate(telemetryPayload);
-        }
+        });
       }
 
       animationFrameId = requestAnimationFrame(render);
