@@ -117,33 +117,66 @@ export const InfoModals: React.FC<InfoModalsProps> = ({ activeTab, onClose }) =>
                 About Mian Faseeh Ur Rehman
               </h2>
               <span className="text-xs font-mono-code text-[#C5A059] block mt-1">
-                QA Engineer & Project Manager
+                Quality Assurance Engineer & Project Manager
               </span>
             </div>
 
-            <p className="text-sm text-white/85 font-light leading-relaxed">
-              A highly technical QA Engineer and Project Manager specializing in end-to-end validation, state management diagnostics, and complex system architecture. Proven expertise in leading cross-functional teams, securing financial APIs, and troubleshooting React/React Native rendering cycles for scalable applications.
+            <p className="text-sm text-white/90 font-light leading-relaxed">
+              I specialize in driving software excellence through rigorous quality assurance and strategic project management. By bridging the gap between technical execution and project delivery, I ensure complex applications are released flawlessly, on time, and aligned with core business objectives.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-1.5">
+            {/* Detailed Skills / Expertise Section */}
+            <div className="space-y-4 pt-1">
+              {/* Quality Assurance & Testing */}
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-3">
                 <div className="flex items-center space-x-2 text-[#C5A059]">
                   <ShieldCheck className="w-4 h-4" />
-                  <h4 className="font-semibold text-sm">Quality Assurance & Security</h4>
+                  <h4 className="font-semibold text-sm tracking-wide uppercase font-mono-code text-white">
+                    Quality Assurance & Testing
+                  </h4>
                 </div>
-                <p className="text-xs text-white/65 font-light leading-relaxed">
-                  End-to-end validation, session leak diagnostics, OTP security validation, and cross-platform mobile/web testing.
-                </p>
+                <div className="space-y-2.5 text-xs text-white/80 font-light leading-relaxed">
+                  <div>
+                    <span className="font-medium text-white/95">End-to-End Testing:</span>{' '}
+                    Expertise in designing comprehensive test plans and executing manual and automated testing protocols across web and mobile platforms.
+                  </div>
+                  <div>
+                    <span className="font-medium text-white/95">Cross-Platform QA:</span>{' '}
+                    Proficient in utilizing tools like Expo Dev for rigorous testing of mobile applications across diverse device environments.
+                  </div>
+                  <div>
+                    <span className="font-medium text-white/95">Release Management:</span>{' '}
+                    Experienced in orchestrating deployment pipelines, managing release cycles, and overseeing production rollouts via platforms like the Google Play Console.
+                  </div>
+                  <div>
+                    <span className="font-medium text-white/95">Defect Lifecycle Management:</span>{' '}
+                    Skilled at identifying, isolating, and tracking system vulnerabilities to ensure zero-downtime deployments and optimal software performance.
+                  </div>
+                </div>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-1.5">
+              {/* Project Management */}
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5 space-y-3">
                 <div className="flex items-center space-x-2 text-[#C5A059]">
                   <Layers className="w-4 h-4" />
-                  <h4 className="font-semibold text-sm">Technical Project Management</h4>
+                  <h4 className="font-semibold text-sm tracking-wide uppercase font-mono-code text-white">
+                    Project Management
+                  </h4>
                 </div>
-                <p className="text-xs text-white/65 font-light leading-relaxed">
-                  Agile delivery, release cycles, cross-functional engineering leadership, and financial API orchestration (Stripe, Plaid).
-                </p>
+                <div className="space-y-2.5 text-xs text-white/80 font-light leading-relaxed">
+                  <div>
+                    <span className="font-medium text-white/95">Lifecycle Management:</span>{' '}
+                    Trained in formal Project Management Professional (PMP) methodologies, overseeing projects from initiation and planning through execution and successful closure.
+                  </div>
+                  <div>
+                    <span className="font-medium text-white/95">Workflow Optimization:</span>{' '}
+                    Focused on streamlining development cycles, optimizing resource allocation, and maintaining strict adherence to quality standards and timelines.
+                  </div>
+                  <div>
+                    <span className="font-medium text-white/95">Cross-Functional Coordination:</span>{' '}
+                    Adept at bridging communication between development, QA, and stakeholder teams to maintain project alignment and velocity.
+                  </div>
+                </div>
               </div>
             </div>
           </div>

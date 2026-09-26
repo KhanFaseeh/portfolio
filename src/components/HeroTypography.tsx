@@ -8,25 +8,30 @@ interface HeroTypographyProps {
 
 export const HeroTypography: React.FC<HeroTypographyProps> = ({ onOpenResume, onOpenContact }) => {
   return (
-    <div className="fixed bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-30 max-w-[360px] pointer-events-auto select-none">
+    <div className="fixed bottom-8 sm:bottom-12 left-6 sm:left-12 lg:left-16 z-30 max-w-[420px] pointer-events-auto select-none">
       {/* "Hi, I'm" in clean, spaced modern sans-serif */}
       <span className="block text-xs sm:text-sm font-sans tracking-[0.3em] uppercase text-white/90 font-medium mb-1 drop-shadow-md">
         Hi, I'm
       </span>
 
-      {/* Name in large, elegant cursive script with subtle soft drop shadow */}
-      <h1 className="font-script text-4xl sm:text-5xl lg:text-6xl text-white font-normal leading-[1.1] drop-shadow-[0_8px_24px_rgba(0,0,0,0.7)] mb-1">
+      {/* Name in large, elegant cursive script with prominent glowing soft blurred shadow (+25-30% font size) */}
+      <h1
+        className="font-script text-5xl sm:text-6xl lg:text-7xl text-white font-normal leading-[1.1] mb-2"
+        style={{
+          textShadow: '0px 4px 24px rgba(255, 255, 255, 0.45), 0px 8px 32px rgba(0, 0, 0, 0.7)',
+        }}
+      >
         Mian Faseeh Ur Rehman
       </h1>
 
       {/* Tagline */}
-      <span className="block text-[11px] sm:text-xs font-mono-code uppercase tracking-wider text-white/70 mb-3 drop-shadow-md">
-        QA Engineer & Project Manager
+      <span className="block text-[11px] sm:text-xs font-mono-code uppercase tracking-wider text-white/80 mb-3 drop-shadow-md font-medium">
+        Quality Assurance Engineer & Project Manager
       </span>
 
-      {/* Compact bio (max-width ~340px) that does not crowd the character */}
-      <p className="text-xs text-white/85 font-light leading-relaxed max-w-[340px] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-        A highly technical QA Engineer and Project Manager specializing in end-to-end validation, state management diagnostics, and complex system architecture. Proven expertise in leading cross-functional teams, securing financial APIs, and troubleshooting React/React Native rendering cycles for scalable applications.
+      {/* Compact bio (max-width ~400px) that does not crowd the character */}
+      <p className="text-xs sm:text-[13px] text-white/90 font-light leading-relaxed max-w-[390px] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+        I specialize in driving software excellence through rigorous quality assurance and strategic project management. By bridging the gap between technical execution and project delivery, I ensure complex applications are released flawlessly, on time, and aligned with core business objectives.
       </p>
 
       {/* Two stylish white pill buttons */}
