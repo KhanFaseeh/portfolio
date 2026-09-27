@@ -17,6 +17,12 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Prevent scroll when modal/bottom-sheet is open */
+body.modal-open {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
 /* Custom Cursor: Hide default cursor ONLY on desktop devices with fine pointer */
 @media (pointer: fine) {
   body, button, a, [role="button"] {
@@ -34,7 +40,41 @@ body {
 
 /* Safe area padding utilities for mobile notched phones */
 .pb-safe {
-  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 16px);
+}
+
+/* Mobile-optimized lightweight CSS mesh gradient fallback */
+.mobile-mesh-gradient {
+  background: 
+    radial-gradient(circle at 50% 20%, rgba(197, 160, 89, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 10% 80%, rgba(119, 76, 46, 0.4) 0%, transparent 60%),
+    radial-gradient(circle at 90% 90%, rgba(40, 25, 16, 0.8) 0%, transparent 50%),
+    linear-gradient(180deg, #1C130D 0%, #120D0A 50%, #080504 100%);
+}
+
+/* ==========================================================================
+   Apple iOS "Ultra-Thin Material" Glassmorphism
+   Physical Snappy Springs, Sheer Vibrancy & Specular Hairline Edge
+   ========================================================================== */
+.ios-ultra-thin {
+  background: rgba(255, 255, 255, 0.035);
+  backdrop-filter: blur(28px) saturate(190%) contrast(108%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%) contrast(108%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.18),
+    0 24px 48px -12px rgba(0, 0, 0, 0.55),
+    0 8px 24px -4px rgba(0, 0, 0, 0.35);
+}
+
+.ios-ultra-thin-subtle {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: 
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.12),
+    0 12px 28px -8px rgba(0, 0, 0, 0.35);
 }
 
 /* Luxury Editorial & Cursive Headings */

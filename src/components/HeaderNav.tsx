@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Briefcase, User, Mail } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
@@ -29,32 +30,59 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onOpenModal, activeTab }) 
             WebkitBackdropFilter: 'blur(20px)',
           }}
         >
-          <button
+          <motion.button
+            layoutId="nav-item-work"
             onClick={() => onOpenModal('work')}
-            className={`transition-all duration-200 hover:text-white hover:scale-105 active:scale-95 ${
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 35,
+              mass: 0.4,
+            }}
+            className={`transition-colors duration-200 hover:text-white ${
               activeTab === 'work' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
             }`}
           >
             [WORK]
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            layoutId="nav-item-about"
             onClick={() => onOpenModal('about')}
-            className={`transition-all duration-200 hover:text-white hover:scale-105 active:scale-95 ${
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 35,
+              mass: 0.4,
+            }}
+            className={`transition-colors duration-200 hover:text-white ${
               activeTab === 'about' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
             }`}
           >
             [ABOUT]
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            layoutId="nav-item-contact"
             onClick={() => onOpenModal('contact')}
-            className={`transition-all duration-200 hover:text-white hover:scale-105 active:scale-95 ${
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{
+              type: 'spring',
+              stiffness: 450,
+              damping: 35,
+              mass: 0.4,
+            }}
+            className={`transition-colors duration-200 hover:text-white ${
               activeTab === 'contact' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
             }`}
           >
             [CONTACT]
-          </button>
+          </motion.button>
         </nav>
 
         {/* Subtle Haptic Audio Toggle Button */}
@@ -89,16 +117,16 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onOpenModal, activeTab }) 
         </button>
       </div>
 
-      {/* 3. MOBILE NATIVE-STYLE BOTTOM TAB BAR (Visible only on < 768px) */}
+      {/* 3. MOBILE NATIVE-STYLE FLOATING BOTTOM BAR (Visible only on < 768px) */}
       <nav
-        className="flex md:hidden fixed bottom-0 left-0 right-0 z-40 px-4 py-2 bg-[#120D0A]/90 border-t border-white/15 backdrop-blur-[24px] justify-around items-center pb-safe pointer-events-auto"
+        className="flex md:hidden fixed bottom-4 inset-x-4 max-w-sm mx-auto z-40 px-3 py-2 rounded-full bg-[#120D0A]/85 border border-white/20 backdrop-blur-[24px] justify-between items-center shadow-2xl pointer-events-auto"
         style={{
-          boxShadow: '0 -8px 28px rgba(0, 0, 0, 0.45)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
         }}
       >
         <button
           onClick={() => onOpenModal('work')}
-          className={`flex-1 min-h-[48px] flex flex-col items-center justify-center space-y-1 active:scale-95 transition-transform ${
+          className={`flex-1 min-h-[44px] flex flex-col items-center justify-center space-y-0.5 active:scale-95 transition-transform ${
             activeTab === 'work' ? 'text-white' : 'text-white/60'
           }`}
         >
@@ -110,7 +138,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onOpenModal, activeTab }) 
 
         <button
           onClick={() => onOpenModal('about')}
-          className={`flex-1 min-h-[48px] flex flex-col items-center justify-center space-y-1 active:scale-95 transition-transform ${
+          className={`flex-1 min-h-[44px] flex flex-col items-center justify-center space-y-0.5 active:scale-95 transition-transform ${
             activeTab === 'about' ? 'text-white' : 'text-white/60'
           }`}
         >
@@ -122,7 +150,7 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onOpenModal, activeTab }) 
 
         <button
           onClick={() => onOpenModal('contact')}
-          className={`flex-1 min-h-[48px] flex flex-col items-center justify-center space-y-1 active:scale-95 transition-transform ${
+          className={`flex-1 min-h-[44px] flex flex-col items-center justify-center space-y-0.5 active:scale-95 transition-transform ${
             activeTab === 'contact' ? 'text-white' : 'text-white/60'
           }`}
         >

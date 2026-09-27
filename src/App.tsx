@@ -3,10 +3,15 @@ import { CharacterCanvas, TelemetryData } from './components/CharacterCanvas';
 import { HeaderNav } from './components/HeaderNav';
 import { HeroTypography } from './components/HeroTypography';
 import { CustomCursor } from './components/CustomCursor';
-import { InfoModals } from './components/InfoModals';
+import { MorphingExpansionSystem } from './components/MorphingExpansionSystem';
 import { Compass, Eye, Sparkles } from 'lucide-react';
 
 export const App: React.FC = () => {
+  const [isMobile, setIsMobile] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth < 768;
+  });
+
   const [telemetry, setTelemetry] = useState<TelemetryData>({
     fps: 60,
     angleDeg: 0,
@@ -21,13 +26,54 @@ export const App: React.FC = () => {
   const [activeModal, setActiveModal] = useState<'work' | 'about' | 'contact' | 'resume' | null>(null);
   const [showVisualizer, setShowVisualizer] = useState<boolean>(false);
 
+  // Sync mobile screen status on viewport resize
+  React.useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile, { passive: true });
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-[#774C2E] select-none">
-      {/* 1. Full Screen Zero-Ghosting 60 FPS Character Canvas (100vw, 100vh, object-fit: cover) */}
-      <CharacterCanvas
-        onTelemetryUpdate={setTelemetry}
-        showDeadzoneVisualizer={showVisualizer}
-      />
+      {/* 1. Interactive 60 FPS Character Canvas on Desktop vs Full-Bleed Centered Character Background on Mobile */}
+      {!isMobile ? (
+        <CharacterCanvas
+          onTelemetryUpdate={setTelemetry}
+          showDeadzoneVisualizer={showVisualizer}
+        />
+      ) : (
+        <div
+          className="fixed inset-0 pointer-events-none overflow-hidden select-none bg-[#774C2E]"
+          style={{
+            width: '100vw',
+            height: '100dvh',
+            zIndex: 0,
+          }}
+        >
+          {/* Full-Bleed Dead-Center Front-Facing Character Image */}
+          <img
+            src="/frames/center.webp"
+            alt="Mian Faseeh Ur Rehman"
+            className="w-full h-full object-cover object-center select-none"
+            loading="eager"
+            decoding="async"
+          />
+
+          {/* Vignette & Radial Dark Gradient Overlay for optimal content readability */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `
+                radial-gradient(circle at 50% 32%, transparent 20%, rgba(12, 9, 7, 0.45) 70%, rgba(12, 9, 7, 0.85) 100%),
+                linear-gradient(180deg, rgba(12, 9, 7, 0.45) 0%, transparent 25%, rgba(12, 9, 7, 0.6) 65%, rgba(12, 9, 7, 0.95) 100%)
+              `,
+            }}
+          />
+        </div>
+      )}
 
       {/* 2. Floating Frosted-Glass Navigation Pill Centered at Very Top */}
       <HeaderNav
@@ -67,9 +113,9 @@ export const App: React.FC = () => {
       {/* 5. Custom Magnetic Glowing White Cursor with Trailing Aura Ring */}
       <CustomCursor isEyeContact={telemetry.isEyeContact} />
 
-      {/* 6. Frosted Glass Information Modals (Work, About, Contact, Resume) */}
-      <InfoModals
-        activeTab={activeModal}
+      {/* 6. Apple iOS Shared-Element Morphing Card Expansion System (Work, About, Contact, Resume) */}
+      <MorphingExpansionSystem
+        expandedId={activeModal}
         onClose={() => setActiveModal(null)}
       />
     </div>

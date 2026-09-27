@@ -151,8 +151,17 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
     return () => window.removeEventListener('resize', updateLayout);
   }, []);
 
-  // Preload and fully PRE-DECODE all 64 directional frames + center.webp
+  // Preload and fully PRE-DECODE all 64 directional frames + center.webp (DESKTOP ONLY)
   useEffect(() => {
+    // If on mobile / small screen, don't download, pre-decode or keep 65 frames in memory
+    const isMobile = typeof window !== 'undefined' && (
+      window.innerWidth < 768 ||
+      window.matchMedia('(pointer: coarse), (max-width: 767px)').matches
+    );
+    if (isMobile) {
+      return;
+    }
+
     let mounted = true;
     let loadedCount = 0;
     const totalToLoad = TOTAL_FRAMES + 1;

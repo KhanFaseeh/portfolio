@@ -20,12 +20,19 @@ export const CustomCursor: React.FC<CustomCursorProps> = ({ isEyeContact = false
   }, [isEyeContact]);
 
   useEffect(() => {
-    let animId: number;
+    // Disable on touch devices and viewports < 768px completely
+    const isMobile = typeof window !== 'undefined' && (
+      window.innerWidth < 768 ||
+      window.matchMedia('(pointer: coarse), (max-width: 767px)').matches
+    );
 
-    // Disable on touch devices and small viewports
-    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse), (max-width: 767px)').matches) {
+    if (isMobile) {
+      if (dotRef.current) dotRef.current.style.display = 'none';
+      if (ringRef.current) ringRef.current.style.display = 'none';
       return;
     }
+
+    let animId: number;
 
     const handlePointerMove = (e: PointerEvent) => {
       if (e.pointerType === 'touch') return;
