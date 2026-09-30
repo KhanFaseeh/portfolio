@@ -18,6 +18,7 @@ interface CharacterCanvasProps {
   showDeadzoneVisualizer?: boolean;
   activeCompassTarget?: number | null;
   onClearCompassTarget?: () => void;
+  isPaused?: boolean;
 }
 
 const TOTAL_FRAMES = 64;
@@ -29,6 +30,7 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
   showDeadzoneVisualizer = false,
   activeCompassTarget = null,
   onClearCompassTarget,
+  isPaused = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -246,7 +248,7 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
 
   // Strict 60 FPS RequestAnimationFrame Render Loop
   useEffect(() => {
-    if (!isLoaded) return;
+    if (!isLoaded || isPaused) return;
 
     let animationFrameId: number;
     const canvas = canvasRef.current;
@@ -398,7 +400,7 @@ export const CharacterCanvas: React.FC<CharacterCanvasProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [isLoaded, showDeadzoneVisualizer, activeCompassTarget, onTelemetryUpdate]);
+  }, [isLoaded, isPaused, showDeadzoneVisualizer, activeCompassTarget, onTelemetryUpdate]);
 
   return (
     <div

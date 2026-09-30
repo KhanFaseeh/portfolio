@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 
 interface HeroTypographyProps {
@@ -40,43 +39,25 @@ export const HeroTypography: React.FC<HeroTypographyProps> = ({ onOpenResume, on
         {/* Two stylish pill buttons with minimum 44px touch targets on mobile */}
         <div className="flex items-center space-x-3">
           {/* Resume: Solid white pill with arrow icon */}
-          <motion.button
-            layoutId="action-resume"
+          <button
             onClick={onOpenResume}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{
-              type: 'spring',
-              stiffness: 450,
-              damping: 35,
-              mass: 0.4,
-            }}
-            className="group min-h-[44px] flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full bg-white text-[#0C0907] font-semibold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-xl shadow-black/30 hover:bg-white/95"
+            className="group min-h-[44px] flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full bg-white text-[#0C0907] font-semibold text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-lg shadow-black/25 hover:bg-white/95 active:scale-95 transition-all duration-150"
           >
             <span>Resume</span>
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </motion.button>
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-150" />
+          </button>
 
           {/* Let's Talk: Frosted glass / white border pill */}
-          <motion.button
-            layoutId="nav-item-contact"
+          <button
             onClick={onOpenContact}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{
-              type: 'spring',
-              stiffness: 450,
-              damping: 35,
-              mass: 0.4,
-            }}
-            className="min-h-[44px] flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full border border-white/70 bg-white/10 text-white font-medium text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-lg shadow-black/20 hover:bg-white/20 hover:border-white"
+            className="min-h-[44px] flex-1 sm:flex-initial px-5 sm:px-6 py-2.5 rounded-full border border-white/70 bg-white/10 text-white font-medium text-xs sm:text-sm flex items-center justify-center space-x-2 shadow-md shadow-black/20 hover:bg-white/20 hover:border-white active:scale-95 transition-all duration-150"
             style={{
               backdropFilter: 'blur(16px)',
               WebkitBackdropFilter: 'blur(16px)',
             }}
           >
             <span>Let's Talk</span>
-          </motion.button>
+          </button>
         </div>
       </div>
     </div>

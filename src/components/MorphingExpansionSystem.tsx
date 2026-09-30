@@ -12,12 +12,17 @@ interface MorphingExpansionSystemProps {
   onSelectProject?: (projectId: string) => void;
 }
 
-// Snappy, luxurious Apple iOS spring parameters with fast settling to prevent reverse animation lag
-export const SPRING_TRANSITION = {
-  type: 'spring' as const,
-  stiffness: 450,
-  damping: 35,
-  mass: 0.4,
+// High-speed, buttery-smooth GPU cubic-bezier timing curves (zero heavy spring pass delays)
+export const MODAL_ENTER_TRANSITION = {
+  type: 'tween' as const,
+  ease: [0.16, 1, 0.3, 1], // Apple iOS fluid decel curve
+  duration: 0.25,
+};
+
+export const MODAL_EXIT_TRANSITION = {
+  type: 'tween' as const,
+  ease: [0.25, 1, 0.5, 1],
+  duration: 0.18, // Extra snappy exit prevents perceived hanging
 };
 
 // Staggered internal content sequencing variants
@@ -26,28 +31,28 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      delayChildren: 0.05,
-      staggerChildren: 0.04,
+      delayChildren: 0.04,
+      staggerChildren: 0.03,
     },
   },
   exit: {
     opacity: 0,
-    transition: { duration: 0.1, ease: 'easeOut' },
+    transition: { duration: 0.08, ease: 'easeOut' },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      type: 'spring' as const,
-      stiffness: 450,
-      damping: 35,
+      type: 'tween' as const,
+      ease: [0.16, 1, 0.3, 1],
+      duration: 0.2,
     },
   },
-  exit: { opacity: 0, transition: { duration: 0.08 } },
+  exit: { opacity: 0, transition: { duration: 0.06 } },
 };
 
 export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = ({
@@ -107,19 +112,6 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
   // If a specific project was clicked directly or selected, show its deep detail panel
   const isProjectDetail = Boolean(activeProject);
 
-  // LayoutId to match source navigation link or project card
-  const layoutId = isProjectDetail
-    ? `project-card-${activeProject?.id}`
-    : expandedId === 'work'
-    ? 'nav-item-work'
-    : expandedId === 'about'
-    ? 'nav-item-about'
-    : expandedId === 'contact'
-    ? 'nav-item-contact'
-    : expandedId === 'resume'
-    ? 'action-resume'
-    : undefined;
-
   return createPortal(
     <AnimatePresence>
       {expandedId && (
@@ -131,13 +123,13 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
             zIndex: 900000, // Elevated layer, below CustomCursor (999999)
           }}
         >
-          {/* Blurred Backdrop area that dismisses on click */}
+          {/* 1. Backdrop Overlay: Fades ONLY opacity (0 -> 1) with hardware blur, NEVER moves/scales */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.24 }}
-            className="absolute inset-0 bg-black/70 backdrop-blur-[16px]"
+            transition={MODAL_ENTER_TRANSITION}
+            className="fixed inset-0 bg-black/60 backdrop-blur-md will-change-[opacity]"
             onClick={() => {
               if (selectedProjectId) {
                 setSelectedProjectId(null);
@@ -147,14 +139,15 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
             }}
           />
 
-          {/* Morphing Detailed View Panel sharing layoutId & iOS Bottom Sheet styling on mobile */}
+          {/* 2. Content Sheet/Modal: Animate strictly via GPU transform and opacity */}
           <motion.div
-            layoutId={layoutId}
-            layout
-            transition={SPRING_TRANSITION}
+            initial={{ opacity: 0, y: 32, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 24, scale: 0.98 }}
+            transition={MODAL_ENTER_TRANSITION}
             drag="y"
             dragConstraints={{ top: 0, bottom: 0 }}
-            dragElastic={{ top: 0.05, bottom: 0.6 }}
+            dragElastic={{ top: 0.05, bottom: 0.5 }}
             onDragEnd={(_, info) => {
               // If dragged down by > 120px or with downward velocity > 300, dismiss
               if (info.offset.y > 120 || info.velocity.y > 300) {
@@ -165,11 +158,9 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
                 }
               }
             }}
-            className="relative w-full max-w-full md:max-w-4xl h-[88vh] sm:h-auto max-h-[88vh] rounded-t-[28px] sm:rounded-[32px] text-white overflow-hidden flex flex-col shadow-2xl border-t sm:border border-white/20 sm:border-white/12"
+            className="relative w-full max-w-full md:max-w-4xl h-[88vh] sm:h-auto max-h-[88vh] rounded-t-[28px] sm:rounded-[32px] text-white overflow-hidden flex flex-col modal-hairline-border modal-gpu-panel"
             style={{
-              background: 'rgba(18, 18, 24, 0.88)',
-              backdropFilter: 'blur(28px) saturate(190%) contrast(108%)',
-              WebkitBackdropFilter: 'blur(28px) saturate(190%) contrast(108%)',
+              backgroundColor: 'rgba(18, 18, 24, 0.94)', // Solid dark tone without real-time backdrop blur calculation during motion
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -303,9 +294,8 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
 
                   <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {PROJECTS_DATA.map((proj) => (
-                      <motion.div
+                      <div
                         key={proj.id}
-                        layoutId={`project-card-${proj.id}`}
                         onClick={() => setSelectedProjectId(proj.id)}
                         className="rounded-2xl border border-white/10 bg-white/5 p-5 hover:border-white/40 hover:bg-white/8 active:scale-[0.98] transition-all cursor-pointer space-y-3 group"
                       >
@@ -339,7 +329,7 @@ export const MorphingExpansionSystem: React.FC<MorphingExpansionSystemProps> = (
                             </span>
                           )}
                         </div>
-                      </motion.div>
+                      </div>
                     ))}
                   </motion.div>
                 </div>

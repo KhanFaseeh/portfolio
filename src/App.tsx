@@ -43,6 +43,7 @@ export const App: React.FC = () => {
         <CharacterCanvas
           onTelemetryUpdate={setTelemetry}
           showDeadzoneVisualizer={showVisualizer}
+          isPaused={Boolean(activeModal)}
         />
       ) : (
         <div

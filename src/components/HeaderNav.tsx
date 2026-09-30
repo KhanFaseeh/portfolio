@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Volume2, VolumeX, Briefcase, User, Mail } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
@@ -30,59 +29,32 @@ export const HeaderNav: React.FC<HeaderNavProps> = ({ onOpenModal, activeTab }) 
             WebkitBackdropFilter: 'blur(20px)',
           }}
         >
-          <motion.button
-            layoutId="nav-item-work"
+          <button
             onClick={() => onOpenModal('work')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{
-              type: 'spring',
-              stiffness: 450,
-              damping: 35,
-              mass: 0.4,
-            }}
-            className={`transition-colors duration-200 hover:text-white ${
-              activeTab === 'work' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
+            className={`transition-all duration-200 hover:scale-105 active:scale-95 ${
+              activeTab === 'work' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70 hover:text-white'
             }`}
           >
             [WORK]
-          </motion.button>
+          </button>
 
-          <motion.button
-            layoutId="nav-item-about"
+          <button
             onClick={() => onOpenModal('about')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{
-              type: 'spring',
-              stiffness: 450,
-              damping: 35,
-              mass: 0.4,
-            }}
-            className={`transition-colors duration-200 hover:text-white ${
-              activeTab === 'about' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
+            className={`transition-all duration-200 hover:scale-105 active:scale-95 ${
+              activeTab === 'about' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70 hover:text-white'
             }`}
           >
             [ABOUT]
-          </motion.button>
+          </button>
 
-          <motion.button
-            layoutId="nav-item-contact"
+          <button
             onClick={() => onOpenModal('contact')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{
-              type: 'spring',
-              stiffness: 450,
-              damping: 35,
-              mass: 0.4,
-            }}
-            className={`transition-colors duration-200 hover:text-white ${
-              activeTab === 'contact' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70'
+            className={`transition-all duration-200 hover:scale-105 active:scale-95 ${
+              activeTab === 'contact' ? 'text-white font-semibold drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]' : 'text-white/70 hover:text-white'
             }`}
           >
             [CONTACT]
-          </motion.button>
+          </button>
         </nav>
 
         {/* Subtle Haptic Audio Toggle Button */}
